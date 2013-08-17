@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <TextView
+        android:id="@+id/phones_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="August 1, 2013" />
+
+    <TextView
+        android:id="@+id/postLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/phones_date"
+        android:textSize="25sp"
+        android:text="Post:" />
+
+    <TextView
+        android:id="@+id/postValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/preValue"
+        android:layout_alignTop="@+id/postLabel"
+        android:text="4"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/preValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/preLabel"
+        android:layout_centerHorizontal="true"
+        android:text="4"
+        android:textSize="80sp" />
+
+    <SeekBar
+        android:id="@+id/preSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/preValue" />
+
+    <TextView
+        android:id="@+id/homeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/preSeekBar"
+        android:layout_below="@+id/preSeekBar"
+        android:layout_marginTop="18dp"
+        android:text="Home:" />
+
+    <TextView
+        android:id="@+id/preLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/postSeekBar"
+        android:layout_below="@+id/postSeekBar"
+        android:text="Pre:"
+        android:textSize="25sp" />
+
+    <SeekBar
+        android:id="@+id/postSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/postLabel"
+        android:layout_below="@+id/postLabel"
+        android:layout_marginTop="14dp" />
+
+    <SeekBar
+        android:id="@+id/homeSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/homeLabel"
+        android:layout_below="@+id/homeValue" />
+
+    <TextView
+        android:id="@+id/homeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/preValue"
+        android:layout_below="@+id/homeLabel"
+        android:text="4"
+        android:textSize="90sp" />
+
+</RelativeLayout>

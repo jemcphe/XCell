@@ -1,0 +1,7 @@
+package com.jemcphe.xcell;
+
+import android.app.Fragment;
+
+public class FragmentSettings extends Fragment {
+
+}

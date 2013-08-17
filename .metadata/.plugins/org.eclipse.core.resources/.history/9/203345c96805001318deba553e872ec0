@@ -1,0 +1,7 @@
+package com.jemcphe.xcell;
+
+import android.support.v4.app.FragmentActivity;
+
+public class AddsActivity extends FragmentActivity {
+
+}

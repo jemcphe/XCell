@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frag_renewals"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_xcell"
+    android:orientation="vertical" >
+    
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Customer Renewals \nFor\nAugust 1, 2013"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:background="@color/xcell_blue"/>
+    
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="150sp"
+        android:text="4" />
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="300dip"
+        android:layout_height="wrap_content"
+        android:text="Upgrade Commission"
+        android:textColor="#fff"
+        android:background="@color/xcell_blue"
+        android:gravity="center"
+        />
+    
+</LinearLayout>

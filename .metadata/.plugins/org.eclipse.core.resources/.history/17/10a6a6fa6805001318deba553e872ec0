@@ -1,0 +1,8 @@
+package com.jemcphe.xcell;
+
+import android.app.ActionBar;
+import android.support.v4.app.FragmentActivity;
+
+public class AddsActivity extends FragmentActivity implements ActionBar.TabListener {
+	
+}
