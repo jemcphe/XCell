@@ -1,12 +1,16 @@
 package com.jemcphe.xcell;
 
+import java.io.File;
+
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -18,36 +22,41 @@ public class FragmentRenewals extends Fragment implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		
-		
-		
-		
+		super.onCreate(savedInstanceState);	
 	}
-
-
 
 	public FragmentRenewals() {
     }
 
 	
 	
-    @Override
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+		
+		File renewalFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/renewal_today");
+		
+    	String todayRenewalValue = FileInfo.readStringFile(getActivity(), "renewal_today", true);
     	
         view = inflater.inflate(R.layout.frag_renewals, container, false);
         
 		final TextView renewalText = (TextView) view.findViewById(R.id.renewalValue);
-		renewalText.setText(String.valueOf(renewalValue));
         
+		
+		
         SeekBar seekBar = (SeekBar) view.findViewById(R.id.renewalSeekBar);
+        if (renewalFile.exists()) {
+        	int seekBarValue = Integer.valueOf(todayRenewalValue);
+        	seekBar.setProgress(seekBarValue);
+    		renewalText.setText(todayRenewalValue);
+    	}
         seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				
+				String todayRenewals = (String) renewalText.getText();
+				FileInfo.storeStringFile(getActivity(), "renewal_today", todayRenewals, true);
 			}
 			
 			@Override
@@ -70,13 +79,14 @@ public class FragmentRenewals extends Fragment implements OnClickListener {
 			}
 		});
         
-        
+        Button updateButton = (Button) view.findViewById(R.id.renewalUpdateBtn);
+        updateButton.setOnClickListener(this);
         return view;
     }
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		Log.i("updatebutton", "Clicked!!");
 	}
 }

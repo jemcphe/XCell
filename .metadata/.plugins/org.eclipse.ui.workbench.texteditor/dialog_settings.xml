@@ -13,26 +13,26 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="smbLabel" key="selection"/>
+		<item value="accessoryField" key="selection"/>
 		<list key="findhistory">
-			<item value="connectedLabel"/>
+			<item value="editText1"/>
+			<item value="updateButton"/>
 			<item value="seekBar1"/>
+			<item value="connectedLabel"/>
 			<item value="connectedValue"/>
 			<item value="connectedDate"/>
 			<item value="seekBar2"/>
 			<item value="button1"/>
-			<item value="editText3"/>
-			<item value="editText2"/>
 		</list>
 		<list key="replacehistory">
+			<item value="accessoryField"/>
+			<item value="renewalUpdateBtn"/>
+			<item value="connectedSeekBar"/>
 			<item value="smbLabel"/>
 			<item value="smbSeekBar"/>
 			<item value="smbValue"/>
 			<item value="smbDate"/>
 			<item value="preSeekBar"/>
-			<item value="postSeekBar"/>
-			<item value="submitButton"/>
-			<item value="accessoryEditText"/>
 		</list>
 	</section>
 </section>

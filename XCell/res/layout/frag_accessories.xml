@@ -14,7 +14,7 @@
         android:text="Accessory Name"/>
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/accessoryField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:hint="Vehicle Charger, Screen Protector, etc..."
@@ -38,7 +38,7 @@
          />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/priceField"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -57,7 +57,7 @@
         android:layout_marginTop="10dp" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/qtyField"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:textSize="15sp"

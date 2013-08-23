@@ -1,14 +1,26 @@
 package com.jemcphe.xcell;
 
+import java.io.File;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.Collection;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import android.app.ActionBar.TabListener;
 import android.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +69,7 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 				// When swiping between different app sections, select the corresponding tab.
 				// We can also use ActionBar.Tab#select() to do this if we have a reference to the
 				// Tab.
-				actionBar.setSelectedNavigationItem(position);
+				actionBar.setSelectedNavigationItem(position); 
 			}
 		});
 
@@ -71,6 +83,9 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 					.setText(mAppSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		pleaseRefresh();
+		
 	}
 
 	@Override
@@ -149,6 +164,16 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 		}
 	}
 
+	public void pleaseRefresh(){
+		int hour = Calendar.HOUR_OF_DAY;
+		if (hour == 21){
+			Log.i("Refreshing Hour", "It is Time!!");
+		} else {
+			Log.i("Not Refreshing Hour", "Sorry, it is not time");
+		}
+		
+	}
+	
 	public static class DummySectionFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
@@ -162,8 +187,90 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-
+			
 			View rootView = inflater.inflate(R.layout.data_adds, container, false);
+			
+			TextView postValue = (TextView) rootView.findViewById(R.id.data_postValue);
+			TextView preValue = (TextView) rootView.findViewById(R.id.data_preValue);
+			TextView connectedValue = (TextView) rootView.findViewById(R.id.data_connectedValue);
+			TextView smbValue = (TextView) rootView.findViewById(R.id.data_smbValue);
+			TextView homeValue = (TextView) rootView.findViewById(R.id.data_homeValue);
+			
+			File postDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/post_today");
+			File postStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/post_start");
+			
+			File preDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/pre_today");
+			File preStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/pre_start");
+			
+			File connectedDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/connected_today");
+			File connectedStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/connected_start");
+			
+			File smbDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/smb_today");
+			File smbStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/smb_start");
+			
+			File homeDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/home_today");
+			File homeStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/home_start");
+			
+			//Post setup
+			if (postDailyFile.exists() && postStartFile.exists()){
+				String dailyPost = FileInfo.readStringFile(getActivity(), "post_today", true);
+				String savedPost = FileInfo.readStringFile(getActivity(), "post_start", true);
+				int postTotal = Integer.valueOf(dailyPost) + Integer.valueOf(savedPost);
+				postValue.setText(String.valueOf(postTotal));
+			} else {
+				String postStart = "0";
+				FileInfo.storeStringFile(getActivity(), "post_start", postStart, true);
+				postValue.setText(postStart);
+			}
+			
+			//Pre setup
+			if (preDailyFile.exists() && preStartFile.exists()){
+				String dailyPre = FileInfo.readStringFile(getActivity(), "pre_today", true);
+				String savedPre = FileInfo.readStringFile(getActivity(), "pre_start", true);
+				int preTotal = Integer.valueOf(dailyPre) + Integer.valueOf(savedPre);
+				preValue.setText(String.valueOf(preTotal));
+			} else {
+				String preStart = "0";
+				FileInfo.storeStringFile(getActivity(), "pre_start", preStart, true);
+				preValue.setText(preStart);
+			}
+			
+			//Connected setup
+			if (connectedDailyFile.exists() && connectedStartFile.exists()){
+				String dailyConnected = FileInfo.readStringFile(getActivity(), "connected_today", true);
+				String savedConnected = FileInfo.readStringFile(getActivity(), "connected_start", true);
+				int connectedTotal = Integer.valueOf(dailyConnected) + Integer.valueOf(savedConnected);
+				connectedValue.setText(String.valueOf(connectedTotal));
+			} else {
+				String connectedStart = "0";
+				FileInfo.storeStringFile(getActivity(), "connected_start", connectedStart, true);
+				postValue.setText(connectedStart);
+			}
+			
+			//SMB setup
+			if (smbDailyFile.exists() && smbStartFile.exists()){
+				String dailySmb = FileInfo.readStringFile(getActivity(), "smb_today", true);
+				String savedSmb = FileInfo.readStringFile(getActivity(), "smb_start", true);
+				int smbTotal = Integer.valueOf(dailySmb) + Integer.valueOf(savedSmb);
+				smbValue.setText(String.valueOf(smbTotal));
+			} else {
+				String smbStart = "0";
+				FileInfo.storeStringFile(getActivity(), "smb_start", smbStart, true);
+				smbValue.setText(smbStart);
+			}
+			
+			//Home setup
+			if (homeDailyFile.exists() && homeStartFile.exists()){
+				String dailyHome = FileInfo.readStringFile(getActivity(), "home_today", true);
+				String savedHome = FileInfo.readStringFile(getActivity(), "home_start", true);
+				int homeTotal = Integer.valueOf(dailyHome) + Integer.valueOf(savedHome);
+				homeValue.setText(String.valueOf(homeTotal));
+			} else {
+				String homeStart = "0";
+				FileInfo.storeStringFile(getActivity(), "home_start", homeStart, true);
+				postValue.setText(homeStart);
+			}
+			
 			return rootView;
 		}
 	}
@@ -183,6 +290,34 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 				Bundle savedInstanceState) {
 
 			View rootView = inflater.inflate(R.layout.data_renewals, container, false);
+			
+			TextView renewalValue = (TextView) rootView.findViewById(R.id.data_renewalsValue);
+			TextView commissionValue = (TextView) rootView.findViewById(R.id.data_renewalCommissionValue);
+			
+			File renewDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/renewal_today");
+			File renewStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/renewal_start");
+			
+			//Renewal Setup
+			if (renewDailyFile.exists() && renewStartFile.exists()){
+				String dailyRenewal = FileInfo.readStringFile(getActivity(), "renewal_today", true);
+				String savedRenewal = FileInfo.readStringFile(getActivity(), "renewal_start", true);
+				int renewalTotal = Integer.valueOf(dailyRenewal) + Integer.valueOf(savedRenewal);
+				
+				renewalValue.setText(String.valueOf(renewalTotal));
+				
+				String renewals = renewalValue.getText().toString();
+				int projCommission = 8 * Integer.valueOf(renewals);
+				commissionValue.setText("$" + String.valueOf(projCommission) + ".00");
+				
+			} else {
+				String renewalStart = "0";
+				FileInfo.storeStringFile(getActivity(), "renewal_start", renewalStart, true);
+				renewalValue.setText(renewalStart);
+				commissionValue.setText("$" + "0.00");
+			}
+			
+			
+			
 			return rootView;
 		}
 	}
@@ -192,6 +327,8 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
+		
+		
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
 		public SectionFragment3() {
@@ -202,6 +339,54 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 				Bundle savedInstanceState) {
 
 			View rootView = inflater.inflate(R.layout.data_accessory, container, false);
+
+			String JSONString = FileInfo.readStringFile(getActivity(), "accessory_data", true);
+			
+			try {
+				JSONObject jsonObject = new JSONObject(JSONString);
+				@SuppressWarnings("rawtypes")
+				JSONArray data = new JSONArray((Collection) jsonObject);
+				
+				Log.i("Accessory Array", data.toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			//			ArrayList<HashMap<String, String>> accessoryList = new ArrayList<HashMap<String, String>>();
+			//
+			//			try {
+			//				for(int i=0; i<data.length(); i++){
+			//					JSONObject teamObject = data.getJSONObject(i);
+			//					Log.i("JSONObject", teamObject.toString());
+			//					Log.i("JSONObject", teamObject.getString("first_name"));
+			//					String teamName = teamObject.getString("first_name") + " " + teamObject.getString("last_name");
+			//					String wins = teamObject.getString("won");
+			//					String losses = teamObject.getString("lost");
+			//
+			//					//Create HashMap for data
+			//					HashMap<String, String> displayMap = new HashMap<String, String>();
+			//					displayMap.put("team", teamName);
+			//					displayMap.put("wins", wins);
+			//					displayMap.put("losses", losses);
+			//
+			//					teamList.add(displayMap);
+			//				}
+			//
+			//				//Set up the Adapter
+			//				SimpleAdapter adapter = new SimpleAdapter(this, teamList, R.layout.list_row,
+			//						new String[] {"team", "wins", "losses"}, 
+			//						new int[] {R.id.team, R.id.wins, R.id.losses});
+			//
+			//				//Instantiate the Adapter
+			//				listview.setAdapter(adapter);
+			//
+			//			} catch (JSONException e) {
+			//				// TODO Auto-generated catch block
+			//				Log.e("JSON ERROR", e.toString());
+			//			}
+			
 			return rootView;
 		}
 	}

@@ -4,14 +4,20 @@ package com.jemcphe.xcell;
 //import com.jemcphe.xcell.MainActivity.SectionFragment2;
 //import com.jemcphe.xcell.MainActivity.SectionFragment3;
 
+import java.io.File;
+
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -139,9 +145,7 @@ public class FragmentAdds extends FragmentActivity implements ActionBar.TabListe
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			
-			String phones = "phones";
-			
+						
 			switch(position){
 			case 0:
 				
@@ -162,7 +166,7 @@ public class FragmentAdds extends FragmentActivity implements ActionBar.TabListe
 		 * fragment.
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
-
+		
 		public DummySectionFragment() {
 		}
 
@@ -170,8 +174,127 @@ public class FragmentAdds extends FragmentActivity implements ActionBar.TabListe
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
+			File postFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/post_today");
+			File preFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/pre_today");
+			File homeFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/home_today");
+			
+			//Create Strings with values from storage
+			String todayPostValue = FileInfo.readStringFile(getActivity(), "post_today", true);
+			String todayPreValue = FileInfo.readStringFile(getActivity(), "pre_today", true);
+			String todayHomeValue = FileInfo.readStringFile(getActivity(), "home_today", true);
+			
 			View rootView = inflater.inflate(R.layout.phones, container, false);
-
+			
+			final TextView postValue = (TextView) rootView.findViewById(R.id.postValue);
+			final TextView preValue = (TextView) rootView.findViewById(R.id.preValue);
+			final TextView homeValue = (TextView) rootView.findViewById(R.id.homeValue);
+			
+			//SeekBars
+			SeekBar postSeek = (SeekBar) rootView.findViewById(R.id.postSeekBar);
+			SeekBar preSeek = (SeekBar) rootView.findViewById(R.id.preSeekBar);
+			SeekBar homeSeek = (SeekBar) rootView.findViewById(R.id.homeSeekBar);
+			
+			if (postFile.exists()){
+				int postSeekBarValue = Integer.valueOf(todayPostValue);
+				postValue.setText(todayPostValue);
+				postSeek.setProgress(postSeekBarValue);
+			}
+			
+			if (preFile.exists()){
+				int preSeekBarValue = Integer.valueOf(todayPreValue);
+				preValue.setText(todayPreValue);
+				preSeek.setProgress(preSeekBarValue);
+			}
+			
+			if (homeFile.exists()){
+				int homeSeekBarValue = Integer.valueOf(todayHomeValue);
+				homeValue.setText(todayHomeValue);
+				homeSeek.setProgress(homeSeekBarValue);
+			}
+			
+			//setup postSeek
+			postSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+				
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					String todayPost = (String) postValue.getText();
+					FileInfo.storeStringFile(getActivity(), "post_today", todayPost, true);
+				}
+				
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+					// TODO Auto-generated method stub
+					if (fromUser) {
+						seekBar.setProgress(progress);
+						Log.i("SeekBar Progress", String.valueOf(progress));
+						postValue.setText(String.valueOf(progress));
+					}
+				}
+			});
+			
+			//setup preSeek
+			preSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+				
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					String todayPre = (String) preValue.getText();
+					FileInfo.storeStringFile(getActivity(), "pre_today", todayPre, true);
+				}
+				
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+					// TODO Auto-generated method stub
+					if (fromUser) {
+						seekBar.setProgress(progress);
+						Log.i("SeekBar Progress", String.valueOf(progress));
+						preValue.setText(String.valueOf(progress));
+					}
+				}
+			});
+			
+			//Setup homeSeek
+			homeSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+				
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					String todayHome = (String) homeValue.getText();
+					FileInfo.storeStringFile(getActivity(), "home_today", todayHome, true);
+				}
+				
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+					// TODO Auto-generated method stub
+					if (fromUser) {
+						seekBar.setProgress(progress);
+						Log.i("SeekBar Progress", String.valueOf(progress));
+						homeValue.setText(String.valueOf(progress));
+					}
+				}
+			});
 			return rootView;
 		}
 	}
@@ -190,7 +313,49 @@ public class FragmentAdds extends FragmentActivity implements ActionBar.TabListe
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
+			File connectedFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/connected_today");
+			
+			String connectedTodayValue = FileInfo.readStringFile(getActivity(), "connected_today", true);
+			
+			
 			View rootView = inflater.inflate(R.layout.connected, container, false);
+			
+			final TextView connectedValue = (TextView) rootView.findViewById(R.id.connectedValue);
+			SeekBar connectedSeek = (SeekBar) rootView.findViewById(R.id.connectedSeekBar);
+			
+			if (connectedFile.exists()) {
+				int connectedSeekBarValue = Integer.valueOf(connectedTodayValue);
+				connectedValue.setText(connectedTodayValue);
+				connectedSeek.setProgress(connectedSeekBarValue);
+			}
+			
+			connectedSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+				
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					String todayConnected = (String) connectedValue.getText();
+					FileInfo.storeStringFile(getActivity(), "connected_today", todayConnected, true);
+				}
+				
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+					// TODO Auto-generated method stub
+					if (fromUser) {
+						seekBar.setProgress(progress);
+						Log.i("SeekBar Progress", String.valueOf(progress));
+						connectedValue.setText(String.valueOf(progress));
+					}
+				}
+			});
+			
 			return rootView;
 		}
 	}
@@ -209,7 +374,48 @@ public class FragmentAdds extends FragmentActivity implements ActionBar.TabListe
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
+			File smbFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/smb_today");
+			
+			String smbTodayValue = FileInfo.readStringFile(getActivity(), "smb_today", true);
+			
+			
 			View rootView = inflater.inflate(R.layout.smb, container, false);
+			
+			final TextView smbValue = (TextView) rootView.findViewById(R.id.smbValue);
+			SeekBar smbSeek = (SeekBar) rootView.findViewById(R.id.smbSeekBar);
+			
+			if (smbFile.exists()) {
+				int smbSeekBarValue = Integer.valueOf(smbTodayValue);
+				smbValue.setText(smbTodayValue);
+				smbSeek.setProgress(smbSeekBarValue);
+			}
+			
+			smbSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+				
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					String todaySmb = (String) smbValue.getText();
+					FileInfo.storeStringFile(getActivity(), "smb_today", todaySmb, true);
+				}
+				
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+					if (fromUser) {
+						seekBar.setProgress(progress);
+						Log.i("SeekBar Progress", String.valueOf(progress));
+						smbValue.setText(String.valueOf(progress));
+					}
+					
+				}
+			});
 			return rootView;
 		}
 	}

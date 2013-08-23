@@ -18,18 +18,20 @@
         android:id="@+id/connectedValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/seekBar1"
+        android:layout_above="@+id/connectedSeekBar"
         android:layout_centerHorizontal="true"
         android:text="4"
         android:textSize="110sp" />
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/connectedSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/connectedDate"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="187dp" />
+        android:layout_marginBottom="187dp"
+        android:max="15" />
+    
 
     <TextView
         android:id="@+id/connectedLabel"

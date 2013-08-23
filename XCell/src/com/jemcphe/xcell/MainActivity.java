@@ -9,11 +9,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.AdapterView; 
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends FragmentActivity implements FragmentAccessories.OnAccessoryAdded{
+public class MainActivity extends FragmentActivity{
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -212,21 +212,6 @@ public class MainActivity extends FragmentActivity implements FragmentAccessorie
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
-	}
-
-
-	@Override
-	public void onAccessoryAdded() {
-		// TODO Auto-generated method stub
-		
-		
-		//Define fragment for calling methods
-		FragmentAccessories displayFragment = (FragmentAccessories) getFragmentManager().findFragmentById(R.id.frag_accessories);
-		
-		if (displayFragment != null && displayFragment.isInLayout()){
-			
-		}
-		
 	}
 
 }

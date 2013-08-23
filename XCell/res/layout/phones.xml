@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/preValue"
         android:layout_alignTop="@+id/postLabel"
-        android:text="4"
         android:textSize="60sp" />
 
     <SeekBar
@@ -30,14 +29,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/homeLabel"
-        android:layout_below="@+id/homeValue" />
+        android:layout_below="@+id/homeValue"
+        android:max="15" />
 
     <SeekBar
         android:id="@+id/postSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/postLabel"
-        android:layout_below="@+id/postValue" />
+        android:layout_below="@+id/postValue"
+        android:max="15" />
 
     <TextView
         android:id="@+id/preValue"
@@ -45,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/preLabel"
         android:layout_centerHorizontal="true"
-        android:text="4"
         android:textSize="60sp" />
 
     <SeekBar
@@ -53,7 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/preLabel"
-        android:layout_below="@+id/preValue" />
+        android:layout_below="@+id/preValue"
+        android:max="15" />
 
     <TextView
         android:id="@+id/homeValue"
@@ -61,7 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/preValue"
         android:layout_alignTop="@+id/homeLabel"
-        android:text="4"
         android:textSize="60sp" />
 
     <TextView

@@ -43,7 +43,6 @@
         android:layout_below="@+id/data_renewalCommissionLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="$352.00"
         android:textSize="60sp" />
 
 </RelativeLayout>

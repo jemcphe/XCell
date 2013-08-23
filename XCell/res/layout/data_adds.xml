@@ -45,10 +45,10 @@
             android:textSize="25sp" />
 
         <TextView
+            android:id="@+id/data_postValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="4"
             android:textSize="25sp" />
 
         <TextView
@@ -59,10 +59,10 @@
             android:textSize="25sp" />
 
         <TextView
+            android:id="@+id/data_preValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="4"
             android:textSize="25sp" />
 
         <TextView
@@ -73,10 +73,10 @@
             android:textSize="25sp" />
 
         <TextView
+            android:id="@+id/data_connectedValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="4"
             android:textSize="25sp" />
 
         <TextView
@@ -87,10 +87,10 @@
             android:textSize="25sp" />
 
         <TextView
+            android:id="@+id/data_smbValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="4"
             android:textSize="25sp" />
 
         <TextView
@@ -101,10 +101,10 @@
             android:textSize="25sp" />
 
         <TextView
+            android:id="@+id/data_homeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="4"
             android:textSize="25sp" />
     </GridLayout>
 
