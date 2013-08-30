@@ -1,19 +1,21 @@
 package com.jemcphe.xcell;
 
 import java.io.File;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.Collection;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
 
+import com.jemcphe.xcell.db.AccessoriesDataSource;
+import com.jemcphe.xcell.items.Accessory;
+
+import android.annotation.SuppressLint;
 import android.app.ActionBar.TabListener;
 import android.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MyDataActivity extends FragmentActivity implements TabListener {
@@ -41,6 +44,8 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 	 * time.
 	 */
 	ViewPager mViewPager;
+	
+	AccessoriesDataSource dataSource;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,12 +55,15 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 		// of the app.
 		mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
+		dataSource = new AccessoriesDataSource(this);
+		dataSource.open();
+		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 
 		// Up enabled as a workaround for now
 		actionBar.setHomeButtonEnabled(true);
-
+		
 		// Specify that we will be displaying tabs in the action bar.
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -84,7 +92,6 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 					.setTabListener(this));
 		}
 		
-		pleaseRefresh();
 		
 	}
 
@@ -116,28 +123,28 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				Fragment sectionOneFrag = new DummySectionFragment();
+				Fragment sectionOneFrag = new AddsSectionFragment();
 				Bundle args1 = new Bundle();
-				args1.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+				args1.putInt(AddsSectionFragment.ARG_SECTION_NUMBER, position + 1);
 				sectionOneFrag.setArguments(args1);
 				return sectionOneFrag;
 			case 1:
-				Fragment sectionTwoFrag = new SectionFragment2();
+				Fragment sectionTwoFrag = new RenewalSectionFragment();
 				Bundle args2 = new Bundle();
-				args2.putInt(SectionFragment2.ARG_SECTION_NUMBER, position + 1);
+				args2.putInt(RenewalSectionFragment.ARG_SECTION_NUMBER, position + 1);
 				sectionTwoFrag.setArguments(args2);
 				return sectionTwoFrag;
 			case 2:
-				Fragment sectionThreeFrag = new SectionFragment3();
+				Fragment sectionThreeFrag = new AccessorySectionFragment();
 				Bundle args3 = new Bundle();
-				args3.putInt(SectionFragment3.ARG_SECTION_NUMBER, position + 1);
+				args3.putInt(AccessorySectionFragment.ARG_SECTION_NUMBER, position + 1);
 				sectionThreeFrag.setArguments(args3);
 				return sectionThreeFrag;
 			default:
 				// The other sections of the app are dummy placeholders.
-				Fragment fragment = new DummySectionFragment();
+				Fragment fragment = new AddsSectionFragment();
 				Bundle args = new Bundle();
-				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+				args.putInt(AddsSectionFragment.ARG_SECTION_NUMBER, position + 1);
 				fragment.setArguments(args);
 				return fragment;
 			}
@@ -163,25 +170,24 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			return null;
 		}
 	}
-
-	public void pleaseRefresh(){
-		int hour = Calendar.HOUR_OF_DAY;
-		if (hour == 21){
-			Log.i("Refreshing Hour", "It is Time!!");
-		} else {
-			Log.i("Not Refreshing Hour", "Sorry, it is not time");
-		}
-		
-	}
 	
-	public static class DummySectionFragment extends Fragment {
+	public static class AddsSectionFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
+		public static int postTotal;
+		public static int preTotal;
+		public static int connectedTotal;
+		public static int smbTotal;
+		public static int homeTotal;
+		public static int grossAddTotal;
+		public static int addPayout;
+		public static int projectedAddsCommission;
+		String addPayoutString;
+		
+		public AddsSectionFragment() {
 		}
 
 		@Override
@@ -190,11 +196,15 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			
 			View rootView = inflater.inflate(R.layout.data_adds, container, false);
 			
+			
+			
+			TextView projectedAdds = (TextView) rootView.findViewById(R.id.projectedAdds);
 			TextView postValue = (TextView) rootView.findViewById(R.id.data_postValue);
 			TextView preValue = (TextView) rootView.findViewById(R.id.data_preValue);
 			TextView connectedValue = (TextView) rootView.findViewById(R.id.data_connectedValue);
 			TextView smbValue = (TextView) rootView.findViewById(R.id.data_smbValue);
 			TextView homeValue = (TextView) rootView.findViewById(R.id.data_homeValue);
+			TextView grossLabel = (TextView) rootView.findViewById(R.id.grossTotal);
 			
 			File postDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/post_today");
 			File postStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/post_start");
@@ -215,7 +225,7 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			if (postDailyFile.exists() && postStartFile.exists()){
 				String dailyPost = FileInfo.readStringFile(getActivity(), "post_today", true);
 				String savedPost = FileInfo.readStringFile(getActivity(), "post_start", true);
-				int postTotal = Integer.valueOf(dailyPost) + Integer.valueOf(savedPost);
+				postTotal = Integer.valueOf(dailyPost) + Integer.valueOf(savedPost);
 				postValue.setText(String.valueOf(postTotal));
 			} else {
 				String postStart = "0";
@@ -227,7 +237,7 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			if (preDailyFile.exists() && preStartFile.exists()){
 				String dailyPre = FileInfo.readStringFile(getActivity(), "pre_today", true);
 				String savedPre = FileInfo.readStringFile(getActivity(), "pre_start", true);
-				int preTotal = Integer.valueOf(dailyPre) + Integer.valueOf(savedPre);
+				preTotal = Integer.valueOf(dailyPre) + Integer.valueOf(savedPre);
 				preValue.setText(String.valueOf(preTotal));
 			} else {
 				String preStart = "0";
@@ -239,7 +249,7 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			if (connectedDailyFile.exists() && connectedStartFile.exists()){
 				String dailyConnected = FileInfo.readStringFile(getActivity(), "connected_today", true);
 				String savedConnected = FileInfo.readStringFile(getActivity(), "connected_start", true);
-				int connectedTotal = Integer.valueOf(dailyConnected) + Integer.valueOf(savedConnected);
+				connectedTotal = Integer.valueOf(dailyConnected) + Integer.valueOf(savedConnected);
 				connectedValue.setText(String.valueOf(connectedTotal));
 			} else {
 				String connectedStart = "0";
@@ -251,7 +261,7 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			if (smbDailyFile.exists() && smbStartFile.exists()){
 				String dailySmb = FileInfo.readStringFile(getActivity(), "smb_today", true);
 				String savedSmb = FileInfo.readStringFile(getActivity(), "smb_start", true);
-				int smbTotal = Integer.valueOf(dailySmb) + Integer.valueOf(savedSmb);
+				smbTotal = Integer.valueOf(dailySmb) + Integer.valueOf(savedSmb);
 				smbValue.setText(String.valueOf(smbTotal));
 			} else {
 				String smbStart = "0";
@@ -263,7 +273,7 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			if (homeDailyFile.exists() && homeStartFile.exists()){
 				String dailyHome = FileInfo.readStringFile(getActivity(), "home_today", true);
 				String savedHome = FileInfo.readStringFile(getActivity(), "home_start", true);
-				int homeTotal = Integer.valueOf(dailyHome) + Integer.valueOf(savedHome);
+				homeTotal = Integer.valueOf(dailyHome) + Integer.valueOf(savedHome);
 				homeValue.setText(String.valueOf(homeTotal));
 			} else {
 				String homeStart = "0";
@@ -271,18 +281,41 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 				postValue.setText(homeStart);
 			}
 			
+			
+			
+			grossAddTotal = postTotal + preTotal + connectedTotal + smbTotal + homeTotal;
+			String grossString = String.valueOf(grossAddTotal);
+			grossLabel.setText(grossString);
+			
+			addPayoutString = FileInfo.readStringFile(getActivity(), "settings_adds", true);
+			if(addPayoutString.contentEquals("")){
+				projectedAdds.setText("$0.00");
+			} else {
+				projectedAddsCommission = grossAddTotal * Integer.valueOf(addPayoutString);
+				projectedAdds.setText("$" + String.valueOf(projectedAddsCommission) + ".00");
+			}
+			
 			return rootView;
 		}
 	}
 
-	public static class SectionFragment2 extends Fragment {
+	@SuppressLint("SimpleDateFormat")
+	public static String getLongDate(){
+		Date currentDate = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM yyyy");
+		String formattedDate = formatter.format(currentDate);
+		return formattedDate;
+	}
+	
+	public static class RenewalSectionFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public SectionFragment2() {
+		public static int renewalTotal;
+		
+		public RenewalSectionFragment() {
 		}
 
 		@Override
@@ -293,6 +326,8 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			
 			TextView renewalValue = (TextView) rootView.findViewById(R.id.data_renewalsValue);
 			TextView commissionValue = (TextView) rootView.findViewById(R.id.data_renewalCommissionValue);
+			TextView renewalDate = (TextView) rootView.findViewById(R.id.mtdLabel);
+			renewalDate.setText("MTD Renewals for\n" + getLongDate());
 			
 			File renewDailyFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/renewal_today");
 			File renewStartFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/renewal_start");
@@ -301,7 +336,7 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 			if (renewDailyFile.exists() && renewStartFile.exists()){
 				String dailyRenewal = FileInfo.readStringFile(getActivity(), "renewal_today", true);
 				String savedRenewal = FileInfo.readStringFile(getActivity(), "renewal_start", true);
-				int renewalTotal = Integer.valueOf(dailyRenewal) + Integer.valueOf(savedRenewal);
+				renewalTotal = Integer.valueOf(dailyRenewal) + Integer.valueOf(savedRenewal);
 				
 				renewalValue.setText(String.valueOf(renewalTotal));
 				
@@ -322,16 +357,27 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 		}
 	}
 
-	public static class SectionFragment3 extends Fragment {
+	public static class AccessorySectionFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
+		AccessoriesDataSource dataSource;
+		
+		Context context = getActivity();
+		
+		double accessoryTotal = 0;
+		String accessoryTotalString;
+		String projectedString;
+		String percentString;
+		double settingsPercent;
+		double percent;
+		double projectedCommission;
 		
 		
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
-		public SectionFragment3() {
+		public AccessorySectionFragment() {
 		}
 
 		@Override
@@ -339,53 +385,50 @@ public class MyDataActivity extends FragmentActivity implements TabListener {
 				Bundle savedInstanceState) {
 
 			View rootView = inflater.inflate(R.layout.data_accessory, container, false);
-
-			String JSONString = FileInfo.readStringFile(getActivity(), "accessory_data", true);
-			
-			try {
-				JSONObject jsonObject = new JSONObject(JSONString);
-				@SuppressWarnings("rawtypes")
-				JSONArray data = new JSONArray((Collection) jsonObject);
-				
-				Log.i("Accessory Array", data.toString());
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					
+			File percentFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/com.jemcphe.xcell/files/settings_accessories");
+			if(percentFile.exists()){
+				percentString = FileInfo.readStringFile(getActivity(), "settings_accessories", true);
+				settingsPercent = Double.valueOf(percentString);
+				percent = settingsPercent/100;
+			} else {
+				FileInfo.storeStringFile(getActivity(), "settings_accessories", "0", true);
 			}
 			
 			
-			//			ArrayList<HashMap<String, String>> accessoryList = new ArrayList<HashMap<String, String>>();
-			//
-			//			try {
-			//				for(int i=0; i<data.length(); i++){
-			//					JSONObject teamObject = data.getJSONObject(i);
-			//					Log.i("JSONObject", teamObject.toString());
-			//					Log.i("JSONObject", teamObject.getString("first_name"));
-			//					String teamName = teamObject.getString("first_name") + " " + teamObject.getString("last_name");
-			//					String wins = teamObject.getString("won");
-			//					String losses = teamObject.getString("lost");
-			//
-			//					//Create HashMap for data
-			//					HashMap<String, String> displayMap = new HashMap<String, String>();
-			//					displayMap.put("team", teamName);
-			//					displayMap.put("wins", wins);
-			//					displayMap.put("losses", losses);
-			//
-			//					teamList.add(displayMap);
-			//				}
-			//
-			//				//Set up the Adapter
-			//				SimpleAdapter adapter = new SimpleAdapter(this, teamList, R.layout.list_row,
-			//						new String[] {"team", "wins", "losses"}, 
-			//						new int[] {R.id.team, R.id.wins, R.id.losses});
-			//
-			//				//Instantiate the Adapter
-			//				listview.setAdapter(adapter);
-			//
-			//			} catch (JSONException e) {
-			//				// TODO Auto-generated catch block
-			//				Log.e("JSON ERROR", e.toString());
-			//			}
+			ListView listView = (ListView) rootView.findViewById(R.id.listview);
+			TextView accessoryCommissionValue = (TextView) rootView.findViewById(R.id.data_accessoryCommissionValue);
+			TextView accessoryTotalValue = (TextView) rootView.findViewById(R.id.data_accessoryTotalValue);
+			
+			dataSource = new AccessoriesDataSource(getActivity());
+			dataSource.open();
+			
+			List<Accessory> accessories = dataSource.findAll();
+			ArrayList<Double> totals = dataSource.accessoryTotals();
+			
+			
+			if (accessories.isEmpty()){
+				String zero = "$0.00";
+				Log.i("XCELL ACCESSORIES", "EMPTY LIST");
+				accessoryCommissionValue.setText(zero);
+				accessoryTotalValue.setText(zero);
+			} else {
+				
+				//Loop through totals arraylist
+				for (double i : totals){
+					accessoryTotal += i;
+					accessoryTotalString = String.format("%.2f", accessoryTotal);
+				}
+				
+				accessoryTotalValue.setText("$" + accessoryTotalString);
+				
+				projectedCommission = accessoryTotal * percent;
+				projectedString = String.format("$%.2f", projectedCommission);
+				accessoryCommissionValue.setText(projectedString);
+				
+				CustomAdapter adapter = new CustomAdapter(getActivity(), R.layout.list_row, accessories);
+				listView.setAdapter(adapter);
+			}
 			
 			return rootView;
 		}

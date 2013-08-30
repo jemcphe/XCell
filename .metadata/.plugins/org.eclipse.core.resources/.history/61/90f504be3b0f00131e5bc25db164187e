@@ -1,0 +1,105 @@
+package com.jemcphe.xcell.db;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import com.jemcphe.xcell.items.Accessory;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class AccessoriesDataSource {
+
+	private static final String LOGTAG = "XCELL";
+
+	
+	SQLiteOpenHelper dbHelper;
+	SQLiteDatabase dataBase;
+	
+	private static final String[] allColumns = {
+		AccessoryDBOpenHelper.COLUMN_ID,
+		AccessoryDBOpenHelper.COLUMN_DATE,
+		AccessoryDBOpenHelper.COLUMN_ACCESSORY,
+		AccessoryDBOpenHelper.COLUMN_QTY,
+		AccessoryDBOpenHelper.COLUMN_TOTAL
+	};
+	
+	public AccessoriesDataSource (Context context){
+		
+		//SQLite setup
+        dbHelper = new AccessoryDBOpenHelper(context);
+		
+	}
+	
+	public void open () {
+		Log.i(LOGTAG, "Database Opened");
+		dataBase = dbHelper.getWritableDatabase();
+	}
+	
+	public void close () {
+		Log.i(LOGTAG, "Database Closed");
+		dbHelper.close();
+	}
+	
+	public Accessory create(Accessory accessory){
+		ContentValues values = new ContentValues();
+		values.put(AccessoryDBOpenHelper.COLUMN_DATE, accessory.getDate());
+		values.put(AccessoryDBOpenHelper.COLUMN_ACCESSORY, accessory.getAccessoryName());
+		values.put(AccessoryDBOpenHelper.COLUMN_QTY, accessory.getQty());
+		values.put(AccessoryDBOpenHelper.COLUMN_TOTAL, accessory.getTotal());
+		long newId = dataBase.insert(AccessoryDBOpenHelper.TABLE_ACCESSORIES, null, values);
+		accessory.setId(newId);
+		
+		return accessory;
+		
+	}
+	
+	public List<Accessory> findAll(){
+		
+		List<Accessory> accessories = new ArrayList<Accessory>();
+		
+		Cursor cursor = dataBase.query(AccessoryDBOpenHelper.TABLE_ACCESSORIES, allColumns, null, null, null, null, null);
+		Log.i(LOGTAG, "Returned " + cursor.getCount() + " rows"	);
+		
+		//Loop through accessories
+		if(cursor.getCount() > 0){
+			while (cursor.moveToNext()){
+				Accessory accessory = new Accessory();
+				accessory.setId(cursor.getLong(cursor.getColumnIndex(AccessoryDBOpenHelper.COLUMN_ID)));
+				accessory.setDate(cursor.getString(cursor.getColumnIndex(AccessoryDBOpenHelper.COLUMN_DATE)));
+				accessory.setDate(cursor.getString(cursor.getColumnIndex(AccessoryDBOpenHelper.COLUMN_ACCESSORY)));
+				accessory.setDate(cursor.getString(cursor.getColumnIndex(AccessoryDBOpenHelper.COLUMN_QTY)));
+				accessory.setDate(cursor.getString(cursor.getColumnIndex(AccessoryDBOpenHelper.COLUMN_TOTAL)));
+				accessories.add(accessory);
+			}
+		}
+		return accessories;
+	}
+	
+	public HashMap<String, String> getAll(){
+		ArrayList<HashMap<String, String>> accessories = new ArrayList<HashMap<String, String>>();
+
+		Cursor cursor = dataBase.query(AccessoryDBOpenHelper.TABLE_ACCESSORIES, allColumns, null, null, null, null, null);
+		Log.i(LOGTAG, "Returned " + cursor.getCount() + " rows"	);
+		
+		for (int i = 0; i<cursor.getCount(); i++){
+
+			//Create HashMap for data
+			HashMap<String, String> accessory = new HashMap<String, String>();
+			accessory.put("date", cursor.getString(1));
+			accessory.put("accessory", cursor.getString(2));
+			accessory.put("qty", cursor.getString(3));
+			accessory.put("total", cursor.getString(4));
+
+			cursor.moveToNext();
+
+			accessories.add(displayMap);
+		}
+	}
+	
+}

@@ -1,7 +1,10 @@
 package com.jemcphe.xcell;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,13 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class FragmentRenewals extends Fragment implements OnClickListener {
+public class FragmentRenewals extends Fragment {
 
 	View view;
 	int renewalValue;
@@ -40,6 +41,8 @@ public class FragmentRenewals extends Fragment implements OnClickListener {
     	
         view = inflater.inflate(R.layout.frag_renewals, container, false);
         
+        TextView dateText = (TextView) view.findViewById(R.id.renewalDate);
+        dateText.setText("Customer Renewals\nFor\n" + getLongDate());
 		final TextView renewalText = (TextView) view.findViewById(R.id.renewalValue);
         
 		
@@ -79,14 +82,14 @@ public class FragmentRenewals extends Fragment implements OnClickListener {
 			}
 		});
         
-        Button updateButton = (Button) view.findViewById(R.id.renewalUpdateBtn);
-        updateButton.setOnClickListener(this);
         return view;
     }
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		Log.i("updatebutton", "Clicked!!");
+	@SuppressLint("SimpleDateFormat")
+	public String getLongDate(){
+		Date currentDate = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("MM'/'dd'/'yyyy");
+		String formattedDate = formatter.format(currentDate);
+		return formattedDate;
 	}
 }

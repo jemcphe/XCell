@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">XCell</string>
+    <string name="action_settings">Settings</string>
+    <string name="adds_phones">Phones</string>
+    <string name="adds_connected">Connected</string>
+    <string name="adds_smb">SMB</string>
+    <string name="data_adds">Adds</string>
+    <string name="data_renewals">Renewals</string>
+    <string name="data_accessories">Accessories</string>
+    <string-array name="drawer_array">
+        <item>Adds</item>
+        <item>Renewals</item>
+        <item>Accessories</item>
+        <item>My Data</item>
+        <item>Settings</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="accessory_dialog">Accessory Saved Successfully!!</string>
+    <string name="savesend_dialog">Your leader was notified successfully!\nAll daily values will now be reset.</string>
+    <string name="settings_dialog">Your settings have been saved successfully!</string>
+    <string name="goToSettings_dialog">You must go to settings and enter your name before sending sales data.</string>
+    <string name="newMonth_dialog">A new month has been started</string>
+    
+</resources>

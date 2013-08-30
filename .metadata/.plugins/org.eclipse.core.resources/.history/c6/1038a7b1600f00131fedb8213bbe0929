@@ -1,0 +1,64 @@
+package com.jemcphe.xcell;
+
+import java.util.ArrayList;
+
+import com.jemcphe.xcell.items.Accessory;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+public class CustomAdapter extends BaseAdapter {
+
+	private ArrayList<Accessory> dataList;
+    Context _context;
+    
+    CustomAdapter (ArrayList<Accessory> data, Context context){
+        dataList = data;
+        _context = context;
+    }
+	
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return dataList.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return dataList.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO Auto-generated method stub
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View view = convertView;
+		if(view == null){
+			LayoutInflater inflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			view = inflater.inflate(R.layout.list_row, null);
+		}
+		
+		TextView date = (TextView) view.findViewById(R.id.list_date);
+		TextView accessoryName = (TextView) view.findViewById(R.id.list_accessory);
+		TextView qty = (TextView) view.findViewById(R.id.list_qty);
+		TextView total = (TextView) view.findViewById(R.id.list_total);
+		
+		Accessory accessory = dataList.get(position);
+		date.setText(accessory.getDate());
+		accessoryName.setText(accessory.getAccessoryName());
+		qty.setText(accessory.getQty());
+		total.setText(accessory.getTotal());
+		
+		return view;
+	}
+
+}

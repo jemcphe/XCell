@@ -19,5 +19,10 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="accessory_dialog">Accessory Saved Successfully!!</string>
-
+    <string name="savesend_dialog">Your leader was notified successfully!\nAll daily values will now be reset.</string>
+    <string name="settings_dialog">Your settings have been saved successfully!</string>
+    <string name="goToSettings_dialog">You must go to settings and enter your name before sending sales data.</string>
+    <string name="newMonth_dialog">A new month has been started</string>
+    <string name="newMonthCheck_dialog">Are you sure you want to begin a new month?</string>
+    
 </resources>

@@ -1,0 +1,33 @@
+package com.jemcphe.xcell.db;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class AccessoriesDataSource {
+
+	private static final String LOGTAG = "XCELL";
+
+	
+	SQLiteOpenHelper dbHelper;
+	SQLiteDatabase dataBase;
+	
+	public AccessoriesDataSource (Context context){
+		
+		//SQLite setup
+        dbHelper = new AccessoryDBOpenHelper(context);
+		
+	}
+	
+	public void open () {
+		Log.i(LOGTAG, "Database Opened");
+		dataBase = dbHelper.getWritableDatabase();
+	}
+	
+	public void close () {
+		Log.i(LOGTAG, "Database Closed");
+		dbHelper.close();
+	}
+	
+}

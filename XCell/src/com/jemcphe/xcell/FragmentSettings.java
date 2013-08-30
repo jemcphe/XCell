@@ -1,13 +1,66 @@
 package com.jemcphe.xcell;
 
+
+import java.io.File;
+import java.util.regex.Pattern;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class FragmentSettings extends Fragment {
+public class FragmentSettings extends Fragment implements OnClickListener{
 
+	//Strings that check for file existence
+	public static String FILE_NAME = "/Android/data/com.jemcphe.xcell/files/settings_name";
+	public static String FILE_ADDS = "/Android/data/com.jemcphe.xcell/files/settings_adds";
+	public static String FILE_RENEWALS = "/Android/data/com.jemcphe.xcell/files/settings_renewals";
+	public static String FILE_ACCESSORIES = "/Android/data/com.jemcphe.xcell/files/settings_accessories";
+	public static String FILE_EMAIL = "/Android/data/com.jemcphe.xcell/files/settings_email";
+	
+	//Static File Names
+	public static String SETTINGS_NAME = "settings_name";
+	public static String SETTINGS_ADDS = "settings_adds";
+	public static String SETTINGS_RENEWALS = "settings_renewals";
+	public static String SETTINGS_ACCESSORIES = "settings_accessories";
+	public static String SETTINGS_EMAIL = "settings_email";
+	
+	public final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9+._%-+]{1,256}" +
+            "@" +
+            "[a-zA-Z0-9][a-zA-Z0-9-]{0,64}" +
+            "(" +
+            "." +
+            "[a-zA-Z0-9][a-zA-Z0-9-]{0,25}" +
+            ")+"
+        );
+	
+	String nameString;
+	String activationString;
+	String renewalString;
+	String accessoryString;
+	String emailString;
+	EditText name;
+	EditText activations;
+	EditText renewals;
+	EditText accessories;
+	EditText email;
+	Button submitButton;
+	
+	double accessoryEntry;
+	
 	public FragmentSettings() {
     }
 
@@ -16,8 +69,100 @@ public class FragmentSettings extends Fragment {
             Bundle savedInstanceState) {
     	
         View rootView = inflater.inflate(R.layout.frag_settings, container, false);
-
+        
+        File nameFile = new File(Environment.getExternalStorageDirectory() + FILE_NAME);
+        File activationFile = new File(Environment.getExternalStorageDirectory() + FILE_ADDS);
+        File renewalFile = new File(Environment.getExternalStorageDirectory() + FILE_RENEWALS);
+        File accessoryFile = new File(Environment.getExternalStorageDirectory() + FILE_ACCESSORIES);
+        File emailFile = new File(Environment.getExternalStorageDirectory() + FILE_EMAIL);
+        
+        name = (EditText) rootView.findViewById(R.id.nameField);
+        activations = (EditText) rootView.findViewById(R.id.addsEditText);
+        renewals = (EditText) rootView.findViewById(R.id.renewalEditText);
+        accessories = (EditText) rootView.findViewById(R.id.accessoryEditText);
+        email = (EditText) rootView.findViewById(R.id.emailEditText);
+        
+        if(nameFile.exists()){
+        	String nameText = FileInfo.readStringFile(getActivity(), SETTINGS_NAME, true);
+        	name.setText(nameText);
+        }
+        
+        if(activationFile.exists()){
+        	String activationText = FileInfo.readStringFile(getActivity(), SETTINGS_ADDS, true);
+        	activations.setText(activationText);
+        }
+        if(renewalFile.exists()){
+        	String renewalText = FileInfo.readStringFile(getActivity(), SETTINGS_RENEWALS, true);
+        	renewals.setText(renewalText);
+        }
+        if(accessoryFile.exists()){
+        	String accessoryText = FileInfo.readStringFile(getActivity(), SETTINGS_ACCESSORIES, true);
+        	accessories.setText(accessoryText);
+        }
+        if(emailFile.exists()){
+        	String emailText = FileInfo.readStringFile(getActivity(), SETTINGS_EMAIL, true);
+        	email.setText(emailText);
+        }
+        
+        
+        submitButton = (Button) rootView.findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(this);
+        
         return rootView;
+    }
+
+	@Override
+	public void onClick(View v) {
+		nameString = name.getText().toString();
+		activationString = activations.getText().toString();
+		renewalString = renewals.getText().toString();
+//		accessoryEntry = Double.valueOf(accessories.getText().toString());
+		emailString = email.getText().toString();
+//		double percentValue = accessoryEntry/100;
+		//accessoryString = String.format("%.2f", percentValue);
+		accessoryString = accessories.getText().toString();
+		
+		if(nameString.isEmpty() || emailString.isEmpty()){
+			Toast toast = Toast.makeText(getActivity(), "Please populate all fields", Toast.LENGTH_SHORT);
+			toast.show();
+		} else {
+			if (checkEmail(emailString)){
+				FileInfo.storeStringFile(getActivity(), SETTINGS_NAME, nameString, true);
+				FileInfo.storeStringFile(getActivity(), SETTINGS_ADDS, activationString, true);
+				FileInfo.storeStringFile(getActivity(), SETTINGS_RENEWALS, renewalString, true);
+				FileInfo.storeStringFile(getActivity(), SETTINGS_ACCESSORIES, accessoryString, true);
+				FileInfo.storeStringFile(getActivity(), SETTINGS_EMAIL, emailString, true);
+				
+				DialogFragment dialog = new SettingsSaveDialog();
+				dialog.show(getFragmentManager(), "settings");
+			} else {
+				Toast emailToast = Toast.makeText(getActivity(), "Invalid Email", Toast.LENGTH_SHORT);
+				emailToast.show();
+			}	
+		}
+	}
+	
+	@SuppressLint("ValidFragment")
+	public class SettingsSaveDialog extends DialogFragment {
+	    @Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setMessage(R.string.settings_dialog)
+	               .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                       dialog.dismiss();
+	                   }
+	               });
+	               
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+	    }
+	}
+	
+	@SuppressWarnings("unused")
+	private boolean checkEmail(String email) {
+        return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
     }
 	
 }

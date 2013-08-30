@@ -1,0 +1,50 @@
+package com.jemcphe.xcell.items;
+
+import java.text.NumberFormat;
+
+public class Accessory {
+
+	private long id;
+	private String date;
+	private String accessoryName;
+	private String qty;
+	private String total;
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getAccessoryName() {
+		return accessoryName;
+	}
+	public void setAccessoryName(String accessoryName) {
+		this.accessoryName = accessoryName;
+	}
+	public String getQty() {
+		return qty;
+	}
+	public void setQty(String qty) {
+		this.qty = qty;
+	}
+	public String getTotal() {
+		return total;
+	}
+	public void setTotal(String total) {
+		this.total = total;
+	}
+//	@Override
+//	public String toString() {
+//		NumberFormat nf = NumberFormat.getCurrencyInstance();
+//		return nf.format(total);
+//	}
+
+	
+}

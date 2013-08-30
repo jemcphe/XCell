@@ -1,0 +1,49 @@
+package com.jemcphe.xcell.db;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class AccessoryDBOpenHelper extends SQLiteOpenHelper {
+
+	private static final String LOGTAG = "XCELL";
+
+	private static final String DATABASE_NAME = "accessories.db";
+	private static final int DATABASE_VERSION = 1;
+	
+	public static final String TABLE_ACCESSORIES = "accessories";
+	public static final String COLUMN_ID = "accessoryId";
+	public static final String COLUMN_DATE = "date";
+	public static final String COLUMN_ACCESSORY = "accessory";
+	public static final String COLUMN_QTY = "qty";
+	public static final String COLUMN_TOTAL = "total";
+	
+	private static final String TABLE_CREATE = 
+			"CREATE TABLE " + TABLE_ACCESSORIES + " (" +
+			COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			COLUMN_DATE + " TEXT, " +
+			COLUMN_ACCESSORY + " TEXT, " +
+			COLUMN_QTY + " TEXT, " +
+			COLUMN_TOTAL + " NUMERIC " +
+			")";
+	
+	public AccessoryDBOpenHelper(Context context, String name,
+			CursorFactory factory, int version) {
+		super(context, name, factory, version);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

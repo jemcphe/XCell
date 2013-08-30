@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/smbSeekBar"
         android:layout_centerHorizontal="true"
-        android:textSize="110sp" />
+        android:textSize="110sp"
+        android:text="0" />
 
     <SeekBar
         android:id="@+id/smbSeekBar"

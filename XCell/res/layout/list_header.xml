@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/background_xcell" >
+    
+    <TextView 
+        android:id="@+id/date_header"
+        android:text="Date"
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:layout_width="0dip"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+    <TextView 
+        android:id="@+id/accessoryName_header"
+        android:text="Accessory"
+        android:layout_weight="3"
+        android:paddingLeft="5dp"
+        android:layout_width="0dip"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+    <TextView 
+        android:id="@+id/qty_header"
+        android:text="Qty"
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:layout_width="0dip"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/>
+    <TextView 
+        android:id="@+id/total_header"
+        android:text="Total"
+        android:layout_weight="1"
+        android:paddingLeft="5dp"
+        android:layout_width="0dip"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"/> 
+
+</LinearLayout>

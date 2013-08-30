@@ -1,0 +1,30 @@
+package com.jemcphe.xcell;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+
+public class FragmentSettings extends Fragment {
+
+	public FragmentSettings() {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+    	
+        View rootView = inflater.inflate(R.layout.frag_settings, container, false);
+        
+        EditText activations = (EditText) rootView.findViewById(R.id.addsEditText);
+        EditText renewals = (EditText) rootView.findViewById(R.id.renewalEditText);
+        EditText accessories = (EditText) rootView.findViewById(R.id.accessoryEditText);
+        
+        
+        
+        return rootView;
+    }
+	
+}

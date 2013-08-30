@@ -1,0 +1,11 @@
+package com.jemcphe.xcell.db;
+
+import android.content.Context;
+
+public class AccessoriesDataSource {
+
+	public AccessoriesDataSource (Context context){
+		
+	}
+	
+}

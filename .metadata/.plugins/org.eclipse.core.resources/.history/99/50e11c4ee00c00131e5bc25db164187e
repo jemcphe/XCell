@@ -1,0 +1,5 @@
+package com.jemcphe.xcell.db;
+
+public class AccessoriesDataSource {
+
+}

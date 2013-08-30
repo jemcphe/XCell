@@ -1,0 +1,68 @@
+package com.jemcphe.xcell;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.jemcphe.xcell.items.Accessory;
+
+import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+public class CustomAdapter extends ArrayAdapter<Accessory> {
+
+	private List<Accessory> dataList;
+    Context context;
+	public LayoutInflater inflater;
+
+    public CustomAdapter (List<Accessory> data, Context context){
+        this.dataList = data;
+        this.context = context;
+    }
+	
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return dataList.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return dataList.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO Auto-generated method stub
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View view = convertView;
+        //inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		view = inflater.inflate(R.layout.list_row, parent);
+		
+		
+		TextView date = (TextView) view.findViewById(R.id.list_date);
+		TextView accessoryName = (TextView) view.findViewById(R.id.list_accessory);
+		TextView qty = (TextView) view.findViewById(R.id.list_qty);
+		TextView total = (TextView) view.findViewById(R.id.list_total);
+		
+		Accessory accessory = dataList.get(position);
+		date.setText(accessory.getDate());
+		accessoryName.setText(accessory.getAccessoryName());
+		qty.setText(accessory.getQty());
+		total.setText(accessory.getTotal());
+		
+		return view;
+	}
+
+}

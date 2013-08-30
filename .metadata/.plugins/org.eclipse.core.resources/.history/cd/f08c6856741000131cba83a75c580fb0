@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frag_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_xcell"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/nameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Associate Name"
+        android:textSize="20sp" />
+    
+    <EditText
+        android:id="@+id/nameField"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nameLabel"
+        android:layout_alignRight="@+id/textView10"
+        android:layout_below="@+id/nameLabel"
+        android:textColor="@color/xcell_blue"
+        android:ems="10"
+        android:hint="Sam Doe"
+        android:inputType="textCapWords" />
+    
+    <TextView
+        android:id="@+id/newActivationsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/nameField"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="New Activations"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/newActivationsLabel"
+        android:layout_below="@+id/newActivationsLabel"
+        android:text="$"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addsEditText"
+        android:layout_toRightOf="@+id/addsEditText"
+        android:text="per activation"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/addsEditText"
+        android:layout_marginTop="22dp"
+        android:text="Customer Renewals" 
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/renewalEditText"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/addsEditText"
+        android:layout_alignRight="@+id/addsEditText"
+        android:layout_below="@+id/textView5"
+        android:ems="10"
+        android:text="8"
+        android:textColor="@color/xcell_blue"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/renewalEditText"
+        android:layout_alignBottom="@+id/renewalEditText"
+        android:layout_toLeftOf="@+id/addsEditText"
+        android:text="$"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/renewalEditText"
+        android:layout_alignLeft="@+id/textView4"
+        android:text="per renewal"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/addsEditText"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView3"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignRight="@+id/newActivationsLabel"
+        android:layout_toRightOf="@+id/textView3"
+        android:ems="10"
+        android:text="20"
+        android:textColor="@color/xcell_blue"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView6"
+        android:layout_below="@+id/renewalEditText"
+        android:layout_marginTop="23dp"
+        android:text="Accessories"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/accessoryEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/renewalEditText"
+        android:layout_alignRight="@+id/textView8"
+        android:layout_below="@+id/textView8"
+        android:ems="10"
+        android:textColor="@color/xcell_blue"
+        android:text="10"
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/accessoryEditText"
+        android:layout_alignBottom="@+id/accessoryEditText"
+        android:layout_toLeftOf="@+id/accessoryEditText"
+        android:text="$"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/accessoryEditText"
+        android:layout_toRightOf="@+id/accessoryEditText"
+        android:text="% of total accessory sales"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:background="@color/xcell_blue"
+        android:text="Submit"
+        android:textColor="#fff"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/salesManagerEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView9"
+        android:layout_below="@+id/accessoryEditText"
+        android:layout_marginTop="26dp"
+        android:textSize="20sp"
+        android:text="Sales Manager Email" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/salesManagerEmail"
+        android:layout_below="@+id/salesManagerEmail"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+</RelativeLayout>

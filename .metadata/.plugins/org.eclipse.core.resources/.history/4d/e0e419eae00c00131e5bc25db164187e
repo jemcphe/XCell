@@ -1,0 +1,20 @@
+package com.jemcphe.xcell.db;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class AccessoriesDataSource {
+
+	SQLiteOpenHelper dbHelper;
+	SQLiteDatabase dataBase;
+	
+	public AccessoriesDataSource (Context context){
+		
+		//SQLite setup
+        dbHelper = new AccessoryDBOpenHelper(context);
+        dataBase = dbHelper.getWritableDatabase();
+		
+	}
+	
+}

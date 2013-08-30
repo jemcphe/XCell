@@ -1,8 +1,15 @@
 package com.jemcphe.xcell;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.jemcphe.xcell.db.AccessoriesDataSource;
+import com.jemcphe.xcell.db.AccessoryDBOpenHelper;
+import com.jemcphe.xcell.items.Accessory;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -10,6 +17,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +29,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class FragmentAccessories extends Fragment implements OnClickListener {
-
-	public static JSONArray data;
+	
+	private static final String LOGTAG = "XCELL";
 	
 	EditText accessoryField;
     EditText priceField;
     EditText qtyField;
+    
+    AccessoriesDataSource dataSource;
 	
 	//Create an Interface to communicate with Activity
 		public  FragmentAccessories() {
@@ -37,6 +48,14 @@ public class FragmentAccessories extends Fragment implements OnClickListener {
             Bundle savedInstanceState) {
     	
         View rootView = inflater.inflate(R.layout.frag_accessories, container, false);
+        
+        String testDate = getDate();
+        Log.i("Test Date", testDate);
+        
+        //SQLite setup
+        dataSource = new AccessoriesDataSource(getActivity());
+        dataSource.open();
+        
         
         accessoryField = (EditText) rootView.findViewById(R.id.accessoryField);
         priceField = (EditText) rootView.findViewById(R.id.priceField);
@@ -51,37 +70,43 @@ public class FragmentAccessories extends Fragment implements OnClickListener {
 
         return rootView;
     }
-
+    
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		Log.i("Add Accessory Button", "Clicked!!");
 		
-		//Create JSONObject & JSONArray
-//		JSONObject json = new JSONObject();
-		JSONObject jsonAccessory = new JSONObject();
+		//String Values
+		String date = getDate();
+		String accessoryName = accessoryField.getText().toString();
+		String qtyString = qtyField.getText().toString();
+		String priceString = priceField.getText().toString();
+				
+		//Create Accessory Value
+		Accessory accessory = new Accessory();
+//		accessory.setDate(date);
+//		accessory.setAccessoryName(accessoryName);
+//		accessory.setQty(qtyString);
+//		accessory.setTotal(priceString);
 		
+		accessory = dataSource.createAccessory(date, accessoryName, qtyString, priceString);
 		
-		try {
-			jsonAccessory.put("type", accessoryField.getText().toString());
-			jsonAccessory.put("price", priceField.getText().toString());
-			jsonAccessory.put("qty", qtyField.getText().toString());
-//			data.put(jsonAccessory);
-			
-			//FileInfo.storeStringFile(getActivity(), "accessory_data", data.toString(), true);
-			
-			Log.i("JSONObject", jsonAccessory.toString());
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Log.i(LOGTAG, accessory.toString());
+		
+		Log.i(LOGTAG, "Accessory created with ID " + accessory.getId());
 		
 		DialogFragment dialog = new AccessorySaveDialog();
 		dialog.show(getFragmentManager(), "saved");
 		
 	}
     
+	@SuppressLint("SimpleDateFormat")
+	public String getDate(){
+		Date currentDate = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("MM'/'dd");
+		String formattedDate = formatter.format(currentDate);
+		return formattedDate;
+	}
 	
 	@SuppressLint("ValidFragment")
 	public class AccessorySaveDialog extends DialogFragment {

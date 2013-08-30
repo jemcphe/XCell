@@ -1,0 +1,95 @@
+package com.jemcphe.xcell;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.jemcphe.xcell.items.Accessory;
+
+import android.app.Activity;
+import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+public class CustomAdapter extends ArrayAdapter<Accessory> {
+
+	private List<Accessory> dataList;
+    Context context;
+	public LayoutInflater inflater;
+
+    public CustomAdapter (Context context, int resourceId, List<Accessory> accessories){
+    	super(context, resourceId, accessories);
+        this.context = context;
+    }
+	
+    private class ViewHolder {
+    	TextView date;
+    	TextView accessoryName;
+    	TextView qty;
+    	TextView total;
+    }
+    
+//	@Override
+//	public int getCount() {
+//		// TODO Auto-generated method stub
+//		return dataList.size();
+//	}
+//
+//	@Override
+//	public Object getItem(int position) {
+//		// TODO Auto-generated method stub
+//		return dataList.get(position);
+//	}
+//
+//	@Override
+//	public long getItemId(int position) {
+//		// TODO Auto-generated method stub
+//		return position;
+//	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder holder = null;
+		
+		Accessory accessory = getItem(position);
+		
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.list_row, null);
+			holder.date = (TextView) convertView.findViewById(R.id.list_date);
+			holder.accessoryName = (TextView) convertView.findViewById(R.id.list_accessory);
+			holder.qty = (TextView) convertView.findViewById(R.id.list_qty);
+			holder.total = (TextView) convertView.findViewById(R.id.list_total);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+			holder.date.setText(accessory.getDate());
+			holder.accessoryName.setText(accessory.getAccessoryName());
+			holder.qty.setText(accessory.getQty());
+			holder.total.setText(accessory.getTotal());
+		}
+        //inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		view = inflater.inflate(R.layout.list_row, parent);
+		
+		
+		TextView date = (TextView) view.findViewById(R.id.list_date);
+		TextView accessoryName = (TextView) view.findViewById(R.id.list_accessory);
+		TextView qty = (TextView) view.findViewById(R.id.list_qty);
+		TextView total = (TextView) view.findViewById(R.id.list_total);
+		
+		Accessory accessory = dataList.get(position);
+		date.setText(accessory.getDate());
+		accessoryName.setText(accessory.getAccessoryName());
+		qty.setText(accessory.getQty());
+		total.setText(accessory.getTotal());
+		
+		return view;
+	}
+
+}

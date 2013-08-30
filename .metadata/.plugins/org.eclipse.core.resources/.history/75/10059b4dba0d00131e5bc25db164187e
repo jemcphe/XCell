@@ -1,0 +1,47 @@
+package com.jemcphe.xcell.db;
+
+import com.jemcphe.xcell.items.Accessory;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class AccessoriesDataSource {
+
+	private static final String LOGTAG = "XCELL";
+
+	
+	SQLiteOpenHelper dbHelper;
+	SQLiteDatabase dataBase;
+	
+	public AccessoriesDataSource (Context context){
+		
+		//SQLite setup
+        dbHelper = new AccessoryDBOpenHelper(context);
+		
+	}
+	
+	public void open () {
+		Log.i(LOGTAG, "Database Opened");
+		dataBase = dbHelper.getWritableDatabase();
+	}
+	
+	public void close () {
+		Log.i(LOGTAG, "Database Closed");
+		dbHelper.close();
+	}
+	
+	public Accessory create(Accessory accessory){
+		ContentValues values = new ContentValues();
+		values.put(AccessoryDBOpenHelper.COLUMN_DATE, accessory.getDate());
+		values.put(AccessoryDBOpenHelper.COLUMN_ACCESSORY, accessory.getAccessoryName());
+		values.put(AccessoryDBOpenHelper.COLUMN_QTY, accessory.getQty());
+		values.put(AccessoryDBOpenHelper.COLUMN_TOTAL, accessory.getTotal());
+		long newId = dataBase.insert(AccessoryDBOpenHelper.TABLE_ACCESSORIES, null, values);
+		accessory.setId(newId);
+		
+	}
+	
+}

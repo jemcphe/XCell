@@ -3,36 +3,36 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
 		<item value="139" key="DIALOG_Y_ORIGIN"/>
-		<item value="905" key="DIALOG_X_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
+		<item value="905" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="accessoryField" key="selection"/>
+		<item value="listLayout" key="selection"/>
 		<list key="findhistory">
+			<item value="list"/>
+			<item value="SectionFragment3"/>
+			<item value="SectionFragment2"/>
+			<item value="DummySectionFragment"/>
 			<item value="editText1"/>
 			<item value="updateButton"/>
 			<item value="seekBar1"/>
 			<item value="connectedLabel"/>
-			<item value="connectedValue"/>
-			<item value="connectedDate"/>
-			<item value="seekBar2"/>
-			<item value="button1"/>
 		</list>
 		<list key="replacehistory">
+			<item value="listLayout"/>
+			<item value="SmbSectionFragment"/>
+			<item value="ConnectedSectionFragment"/>
+			<item value="PhoneSectionFragment"/>
+			<item value="AccessorySectionFragment"/>
+			<item value="RenewalSectionFragment"/>
+			<item value="AddsSectionFragment"/>
 			<item value="accessoryField"/>
-			<item value="renewalUpdateBtn"/>
-			<item value="connectedSeekBar"/>
-			<item value="smbLabel"/>
-			<item value="smbSeekBar"/>
-			<item value="smbValue"/>
-			<item value="smbDate"/>
-			<item value="preSeekBar"/>
 		</list>
 	</section>
 </section>

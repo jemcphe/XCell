@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="August 1, 2013" 
         android:textSize="15sp"
         android:gravity="center"/>
 
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/connectedSeekBar"
         android:layout_centerHorizontal="true"
-        android:text="4"
+        android:text="0"
         android:textSize="110sp" />
 
     <SeekBar
